@@ -1,0 +1,40 @@
+define host {
+        host_name       cat9k-container
+        use             linux-server
+        address         10.10.1.53
+        _TOKEN          ciscotoken
+}
+
+define service {
+        service_description     CONTAINER-CPU
+        host_name       cat9k-container
+        use             generic-service
+        check_command   check_ncpa!-M cpu/percent -w 85 -c 95 -q aggregate=avg
+}
+
+define service {
+        service_description     CAT9K-FAN
+        host_name       cat9k-container
+        use             generic-service
+        check_command   check_ncpa!-M plugins/check-cisco.pl -a '-H 10.10.1.11 -C public -t fan'
+}
+
+define service {
+        service_description     CAT9K-MEMORY
+        host_name       cat9k-container
+        use             generic-service
+        check_command   check_ncpa!-M plugins/check-cisco.pl -a '-H 10.10.1.11 -C public -t mem'
+}
+
+define service {
+        service_description     CAT9K-PSU
+        host_name       cat9k-container
+        use             generic-service
+        check_command   check_ncpa!-M plugins/check-cisco.pl -a '-H 10.10.1.11 -C public -t ps'
+}
+define service {
+        service_description     CAT9K-INT-VL100
+        host_name       cat9k-container
+        use             generic-service
+        check_command   check_ncpa!-M plugins/check-cisco.pl -a '-H 10.10.1.11 -C public -t int -i Vlan100'
+}
